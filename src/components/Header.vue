@@ -1,11 +1,11 @@
 <template>
   <header class="main-header">
     <div class="main-header-content">
-      <h1><router-link to="/">Github | Mini Search</router-link></h1>
+      <h1><router-link to="/">Github | User Search</router-link></h1>
       <nav class="navbar">
         <ul class>
           <li><router-link to="/">Home</router-link></li>
-          <li><router-link to="/about">Sobre</router-link></li>
+          <li><router-link to="/about">About</router-link></li>
         </ul>
       </nav>
     </div>
