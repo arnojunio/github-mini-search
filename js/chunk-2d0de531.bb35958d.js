@@ -1,2 +1,2 @@
 (window["webpackJsonp"]=window["webpackJsonp"]||[]).push([["chunk-2d0de531"],{"84ba":function(n,e,c){"use strict";c.r(e);var t=c("7a23"),u=Object(t["g"])("div",{class:"main"},[Object(t["g"])("header",{class:"main-content"},[Object(t["g"])("p",null,"Vue Cli"),Object(t["g"])("p",null,"Axios"),Object(t["g"])("p",null,"Vue 3"),Object(t["g"])("p",null,"Router 4")])],-1),l=[u];function a(n,e,c,u,a,b){return Object(t["r"])(),Object(t["f"])("main",null,l)}var b={},i=c("6b0d"),r=c.n(i);const s=r()(b,[["render",a]]);e["default"]=s}}]);
-//# sourceMappingURL=chunk-2d0de531.d38a9f07.js.map
+//# sourceMappingURL=chunk-2d0de531.bb35958d.js.map
