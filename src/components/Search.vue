@@ -72,7 +72,6 @@ export default {
 <style>
 .main {
   width: 100%;
-  background-color: #eaeaea;
 }
 
 .main-content {
