@@ -1,5 +1,5 @@
 # github-mini-search
-
+This is a technical evaluation exercise done with Vuejs to consume the github API
 ## Project setup
 ```
 npm install
