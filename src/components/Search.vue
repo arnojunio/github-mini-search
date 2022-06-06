@@ -75,20 +75,21 @@ export default {
 }
 
 .main-content {
-  max-width: calc(1300px - 40px);
-  padding: 40px;
+  max-width: calc(1300px - 40px); 
   margin: 0 auto;
 }
 
 .main-content h1 {
-  font-size: 4em;
+  font-size: 3em;
   font-family: "Ubuntu";
   text-align: center;
   padding: 20px 0;
-  font-weight: 400;
-  margin-bottom: 20px;
-}
+  font-weight: 500;
 
+}
+.box-search{
+  margin: 10px 0;
+}
 .search[type=text] {
   width: calc(100% - 80px);
   margin: 0 40px;
@@ -109,7 +110,7 @@ export default {
   max-width: calc(1300px - 80px);
   margin: 0 auto;
   border: 1px solid #eaeaea;
-  padding: 10px 10px !important;
+  padding: 5px 10px !important;
 }
 
 .result {
@@ -117,14 +118,14 @@ export default {
   /* padding: 0 20px; */
   margin: 0 auto;
   display: flex;
-  justify-content: space-between;
+  justify-content: space-around;
   flex-wrap: wrap;
 }
 
 .card {
   box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
   transition: 0.3s;
-  flex-basis: calc(25% - 10px);
+  flex-basis: calc(25% - 20px);
   margin-bottom: 10px;
 }
 
@@ -137,6 +138,7 @@ export default {
   padding-left: 10px;
   color: #fff;
   font-weight: 500;
+  text-align: center;
 }
 
 .img {
@@ -188,6 +190,18 @@ export default {
 
   100% {
     opacity: 1;
+  }
+}
+
+@media (max-width: 30em) {
+  .main-content h1{
+    font-size: 2em;
+  }
+  .main-header-content h1 {
+    font-size: 1.4em;
+  }
+  .card{
+    flex-basis: calc(50% - 20px);;
   }
 }
 </style>
