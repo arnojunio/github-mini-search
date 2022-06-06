@@ -18,34 +18,47 @@
     </div>
     <div class="content" v-show="found">
       <div class="result">
-        <div class="card fade-in" v-for="result in results" :key="result.name">
+        <div class="card fade-in" v-for="result in filtered" :key="result.name">
           <h4><b>{{ result.login }}</b></h4>
           <div class="img"><img :src="`${result.avatar_url}`" alt="avatar"></div>
-          <div class="info"><a target="_blank" href="https://github.com/arnojunio">Profile</a><span>Score: 1</span>
-          </div>
         </div>
       </div>
     </div>
+    <Paginator :found="found" :page="page" :total="total" @changepage="changePage"/>
   </main>
 </template>
 
 <script>
+import Paginator from './Paginator.vue';
 export default {
   name: "Search",
   data() {
     return {
       term: "",
       results: [],
-      found: false
+      found: false,
+      total: 0,
+      filtered: [],
+      per_page: 20,
+      page: 1
     }
   },
+  components:{
+    Paginator
+  }, 
   methods: {
+    changePage: function(item){
+      this.filtered = this.results.slice((item - 1) * this.per_page,(item * this.per_page));
+      this.page = item;
+    }, 
     async getData() {
       this.found = false;
-      this.$axios.get(`https://api.github.com/search/users`, { params: { q: this.term, per_page: 20 } })
+      this.$axios.get(`https://api.github.com/search/users`, { params: { q: this.term, per_page: 100 } })
         .then((response) => {
           this.results = response.data.items;
+          this.total = 100;
           this.found = true;
+          this.filtered = this.results.slice(0,this.per_page);
         })
         .catch(function (error) {
           console.error(error);

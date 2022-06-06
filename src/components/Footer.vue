@@ -1,7 +1,7 @@
 <template>
   <footer class="page-footer">
     <div class="page-footer-content">
-      <p>Made by arnojunio</p>
+      <p>Made by arnojunio. See source code on <a href="https://github.com/arnojunio/github-mini-search" target="_blank">Github</a></p>
     </div>
   </footer>
 </template>
