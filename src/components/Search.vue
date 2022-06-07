@@ -5,7 +5,7 @@
         <div class="box-search">
           <h1>Github user search</h1>
 
-          <input class="search" @change="getData" v-model="term" type="text" placeholder="Buscar por nome de usuário"
+          <input class="search" @change="getData" v-model="term" type="text" placeholder="Search for an user..."
             required />
 
         </div>
@@ -21,6 +21,8 @@
         <div class="card fade-in" v-for="result in filtered" :key="result.name">
           <h4><b>{{ result.login }}</b></h4>
           <div class="img"><img :src="`${result.avatar_url}`" alt="avatar"></div>
+          <router-link :to="{name: 'app.user',params: {user:result.login,avatar_url: result.avatar_url}}"
+          >Detalhes</router-link>
         </div>
       </div>
     </div>
@@ -70,6 +72,18 @@ export default {
 </script>
 
 <style>
+.animated-background {
+    animation-duration: 1.25s;
+    animation-fill-mode: forwards;
+    animation-iteration-count: infinite;
+    animation-name: placeHolderShimmer;
+    animation-timing-function: linear;
+    background: #F6F6F6;
+    background: linear-gradient(to right, #F6F6F6 8%, #F0F0F0 18%, #F6F6F6 33%);
+    background-size: 800px 104px;
+    height: 96px;
+    position: relative;
+}
 .main {
   width: 100%;
 }
@@ -88,7 +102,8 @@ export default {
 
 }
 .box-search{
-  margin: 10px 0;
+      max-width: 900px;
+    margin: 0 auto;
 }
 .search[type=text] {
   width: calc(100% - 80px);

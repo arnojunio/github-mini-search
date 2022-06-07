@@ -6,6 +6,7 @@
         <ul class>
           <li><router-link to="/">Home</router-link></li>
           <li><router-link to="/about">About</router-link></li>
+          <li><router-link to="/user">User</router-link></li>
         </ul>
       </nav>
     </div>
@@ -33,7 +34,8 @@ body{
 }
 
 .main-header-content{
-    max-width: 1300px;
+    max-width: calc(1300px - 40px);
+    padding: 0 20px;
     margin:0 auto;
     display: flex;
 }
@@ -78,5 +80,10 @@ body{
 .navbar ul li a:hover{
     color:#2980b9 ;
     background-color:#f5efec ;
+}
+@media (max-width: 30em) {
+  .main-header-content {
+    padding: 0;
+}
 }
 </style>

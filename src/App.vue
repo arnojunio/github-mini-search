@@ -15,7 +15,7 @@ import Footer from './components/Footer.vue'
 export default {
   name: 'App',
   components: {
-    Header,Footer
+    Header, Footer
   }
 }
 </script>
@@ -29,6 +29,6 @@ export default {
 .fade-enter-from,
 .fade-leave-to {
   opacity: 0;
-  transform: translateY(-5%);
+  transform: translateY(-1%);
 }
 </style>
