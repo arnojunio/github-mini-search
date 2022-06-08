@@ -2,26 +2,27 @@
     <main>
         <div class="main">
             <div class="user-wrapp">
-                <div class="user-profile">
-                    <img :src="avatar_url" alt="">
+                <div v-if="found" class="user-profile">
+                    <img :src="user.avatar_url" alt="">
                     <div class="username">
-                        <h2>Arno Junio</h2>
-                        <span>Membro desde 10/04/2015</span>
+                        <h2>{{ user.login }}</h2>
+                        <span>Membro desde {{ user.created_at }}</span>
                     </div>
                     <div class="user-caption">
-                        I'm a passionate web developer from Brazil who loves to build and deliver quality products!
+                        {{ user.bio }}
                     </div>
                 </div>
                 <div class="user-info">
                     <ul>
-                        <li><a @click="changeTab('1')">Repositórios</a></li>
-                        <li><a @click="changeTab('2')">Gists</a></li>
-                        <li><a @click="changeTab('3')">Seguidores</a></li>
-                        <li><a @click="changeTab('4')">Seguindo</a></li>
+                        <li><a class="tab-links" @click="changeTab('1')">Repositórios</a></li>
+                        <li><a class="tab-links" @click="changeTab('2')">Gists</a></li>
+                        <li><a class="tab-links" @click="changeTab('3')">Seguidores</a></li>
+                        <li><a class="tab-links" @click="changeTab('4')">Seguindo</a></li>
                     </ul>
                     <div v-if="choice == 1" class="user-repositories">
-                        <a target="_blank" class="repos-links" v-for="res in repositories" :key="res.id" :href="res.html_url">
-                            <div class="user-repo" >
+                        <a target="_blank" class="repos-links" v-for="res in results" :key="res.id"
+                            :href="res.html_url">
+                            <div class="user-repo">
                                 <h2>{{ res.name }}</h2>
                                 <h6>Atualizado em {{ formatDate(res.updated_at) }}</h6>
                                 <p>{{ res.description }}</p>
@@ -57,20 +58,26 @@ export default {
     data() {
         return {
             option: "Você selecionou Repositórios",
-            choice: 1,
-            repositories: []
+            choice: 0,
+            results: [],
+            endpoint: "",
+            user: null,
+            found: false
         }
     },
     props: {
-        user: { type: String, required: true },
-        avatar_url: { type: String, required: true },
+        username: { type: String, required: true }
     },
     methods: {
-        async getRepos() {
-            this.found = false;
-            this.$axios.get(`https://api.github.com/users/${this.user}/repos`)
+        async getData() {
+            await this.$axios.get(`https://api.github.com/users/${this.username}${this.endpoint}`)
                 .then((response) => {
-                    this.repositories = response.data
+                    if (!this.user) {
+                        this.user = response.data;
+                    }else{
+                        this.results = response.data
+                    }
+                    this.found = true;
                 })
                 .catch(function (error) {
                     console.error(error);
@@ -83,19 +90,17 @@ export default {
         changeTab(value) {
             switch (value) {
                 case '1':
-                    this.option = "Você selecionou Repositórios"
-                    this.choice = 1
+                    this.choice = 1;
+                    this.endpoint = "/repos";
+                    this.getData();
                     break;
                 case '2':
-                    this.option = "Você selecionou gists"
                     this.choice = 2
                     break;
                 case '3':
-                    this.option = "Você selecionou seguidores"
                     this.choice = 3
                     break;
                 case '4':
-                    this.option = "Você selecionou seguindo"
                     this.choice = 4
                     break;
             }
@@ -103,7 +108,7 @@ export default {
 
     },
     created() {
-        this.getRepos()
+        this.getData()
     }
 }
 </script>
@@ -115,11 +120,14 @@ export default {
     margin: 20px auto;
     display: flex;
     justify-content: center;
+    flex-wrap: wrap;
 }
 
 .user-profile {
     flex-basis: 31%;
+    position: relative;
     padding: 0 10px;
+    height: 20%;
 }
 
 .user-profile img {
@@ -128,7 +136,7 @@ export default {
 
 .user-info {
     flex-basis: 55%;
-    padding: 0 20px;
+    padding: 0 10px;
     margin-top: 10px;
 }
 
@@ -172,26 +180,32 @@ export default {
 .user-info ul {
     display: flex;
     align-items: stretch;
+    border: 1px solid #dddddd;
 }
 
 .user-info a {
     color: #777777;
     background-color: #ffffff;
-    border: 1px solid #dddddd;
+    border-bottom: 1px solid #dddddd;
     cursor: pointer;
     padding: 10px 20px;
 }
-.repos-links{
+
+.repos-links {
     text-decoration: none;
-    border:none !important;
+    border: none !important;
     padding: 0 !important;
 }
 
 .username {
     position: absolute;
-    bottom: 0;
+    bottom: 70px;
     margin: 0 20px;
     color: #fff;
+}
+
+.user-caption {
+    padding: 0 20px;
 }
 
 .username>h2 {
@@ -201,5 +215,26 @@ export default {
     margin: 31px 0 4px;
     text-transform: uppercase;
     text-shadow: 1px 1px 2px #000;
+}
+
+@media (max-width: 30em) {
+    .user-profile {
+        flex-basis: 100%;
+        padding: 0 10px;
+    }
+
+    .tab-links {
+        display: block;
+        padding: 20px 20px !important;
+        text-align: center;
+    }
+
+    .user-info ul {
+        display: block;
+    }
+
+    .user-info {
+        flex-basis: 100%;
+    }
 }
 </style>

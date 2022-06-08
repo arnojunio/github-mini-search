@@ -21,7 +21,7 @@
         <div class="card fade-in" v-for="result in filtered" :key="result.name">
           <h4><b>{{ result.login }}</b></h4>
           <div class="img"><img :src="`${result.avatar_url}`" alt="avatar"></div>
-          <router-link :to="{name: 'app.user',params: {user:result.login,avatar_url: result.avatar_url}}"
+          <router-link :to="{name: 'app.user',params: {username:result.login}}"
           >Detalhes</router-link>
         </div>
       </div>

@@ -16,7 +16,7 @@ const routes = [{
         name: 'app.user',
         component: () =>
             import ("../components/User.vue"),
-        props: route => ({...route.params, user: route.params.user, avatar_url: route.params.avatar_url })
+        props: route => ({...route.params, username: route.params.username })
     }
 ]
 
