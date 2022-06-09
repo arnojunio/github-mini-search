@@ -6,7 +6,7 @@
                     <img :src="user.avatar_url" alt="">
                     <div class="username">
                         <h2>{{ user.login }}</h2>
-                        <span>Membro desde {{ user.created_at }}</span>
+                        <span>Membro desde {{ formatDate(user.created_at) }}</span>
                     </div>
                     <div class="user-caption">
                         {{ user.bio }}
@@ -20,31 +20,32 @@
                         <li><a class="tab-links" @click="changeTab('4')">Seguindo</a></li>
                     </ul>
                     <div v-if="choice == 1" class="user-repositories">
-                        <a target="_blank" class="repos-links" v-for="res in results" :key="res.id"
-                            :href="res.html_url">
+                        <a target="_blank" class="repos-links" v-for="repo in repositories" :key="repo.id"
+                            :href="repo.html_url">
                             <div class="user-repo">
-                                <h2>{{ res.name }}</h2>
-                                <h6>Atualizado em {{ formatDate(res.updated_at) }}</h6>
-                                <p>{{ res.description }}</p>
+                                <h2>{{ repo.name }}</h2>
+                                <h6>Atualizado em {{ formatDate(repo.updated_at) }}</h6>
+                                <p>{{ repo.description }}</p>
+                            </div>
+                        </a>
+                    </div>
+                    <div v-if="choice == 2" class="user-repositories">
+                        <a target="_blank" class="repos-links" v-for="gist in gists" :key="gist.id"
+                            :href="gist.html_url">
+                            <div class="user-repo">
+                                <h2>{{ gist.name }}</h2>
+                                <h6>Atualizado em {{ formatDate(gist.created_at) }}</h6>
+                                <p>{{ gist.description }}</p>
                             </div>
                         </a>
                     </div>
                     <div v-if="choice == 4" class="user-repositories">
-                        <div>
-                            <h2>arnojunio</h2>
-                            <h6>Atualizado em 18/03/2021</h6>
-                            <p>Config files for my GitHub profile.</p>
-                        </div>
-                        <div>
-                            <h2>arnojunio</h2>
-                            <h6>Atualizado em 18/03/2021</h6>
-                            <p>Config files for my GitHub profile.</p>
-                        </div>
-                        <div>
-                            <h2>arnojunio</h2>
-                            <h6>Atualizado em 18/03/2021</h6>
-                            <p>Config files for my GitHub profile.</p>
-                        </div>
+                        <a target="_blank" class="repos-links" v-for="flw in following" :key="flw.id"
+                            :href="flw.html_url">
+                            <div class="user-repo">
+                                <h2>{{ flw.login }}</h2>
+                            </div>
+                        </a>
                     </div>
                 </div>
             </div>
@@ -60,29 +61,50 @@ export default {
             option: "Você selecionou Repositórios",
             choice: 0,
             results: [],
+            repositories: [],
+            following:[],
+            gists: [],
             endpoint: "",
             user: null,
-            found: false
+            found: false,
+            response: null
         }
     },
     props: {
         username: { type: String, required: true }
     },
     methods: {
-        async getData() {
-            await this.$axios.get(`https://api.github.com/users/${this.username}${this.endpoint}`)
+        async getData(endpoint = "") {
+            await this.$axios.get(`https://api.github.com/users/${this.username}${endpoint}`)
                 .then((response) => {
-                    if (!this.user) {
-                        this.user = response.data;
-                    }else{
-                        this.results = response.data
-                    }
-                    this.found = true;
+                    this.response = response.data;
+                    this.processResponse(this.response);
                 })
                 .catch(function (error) {
                     console.error(error);
                 });
-
+        },
+        processResponse(response) {
+            if (!this.user) {
+                this.user = response;
+                this.found = true;
+            } else if (this.endpoint == "/repos") {
+                this.repositories = response;
+            } else if (this.endpoint == "/gists") {
+                if (response.length) {
+                    for (let i = 0; i < response.length; i++) {
+                        let f = null;
+                        for (let file in response[i].files) {
+                            f = file;
+                        }
+                        this.gists[i] = {name: f,created_at: response[i].created_at,description: response[i].description,html_url:response[i].html_url}
+                    }
+                } else {
+                    console.log("Nenhum resultado obtido!");
+                }
+            }else if(this.endpoint == "/following"){
+                this.following = response;
+            }
         },
         formatDate(date) {
             return date.replace(/(\d{4})-(\d{2})-(\d{2}).*/, "$3/$2/$1");
@@ -92,23 +114,31 @@ export default {
                 case '1':
                     this.choice = 1;
                     this.endpoint = "/repos";
-                    this.getData();
+                    (!this.repositories.length?this.getData(this.endpoint):"");
                     break;
                 case '2':
                     this.choice = 2
+                    this.endpoint = "/gists";
+                    (!this.gists.length?this.getData(this.endpoint):"");
                     break;
                 case '3':
                     this.choice = 3
                     break;
                 case '4':
                     this.choice = 4
+                    this.endpoint = "/following";
+                    (!this.following.length?this.getData(this.endpoint):"");
                     break;
             }
         },
+        getUserGists() {
+            this.endpoint = "/gists";
+
+        }
 
     },
     created() {
-        this.getData()
+        this.getData();
     }
 }
 </script>
