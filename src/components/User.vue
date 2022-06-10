@@ -39,13 +39,15 @@
                             </div>
                         </a>
                     </div>
-                    <div v-if="choice == 4" class="user-repositories">
-                        <a target="_blank" class="repos-links" v-for="flw in following" :key="flw.id"
-                            :href="flw.html_url">
-                            <div class="user-repo">
-                                <h2>{{ flw.login }}</h2>
-                            </div>
-                        </a>
+                    <div v-if="choice == 4" class="user-following">
+
+                        <div class="card fade-in" v-for="flw in following" :key="flw.id">
+                            <a target="_blank" class="repos-links" :href="flw.html_url">
+                                <div class="img"><img :src="flw.avatar_url" alt="avatar">
+                                </div>
+                                <h4><b>{{ flw.login }}</b></h4>
+                            </a>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -62,7 +64,7 @@ export default {
             choice: 0,
             results: [],
             repositories: [],
-            following:[],
+            following: [],
             gists: [],
             endpoint: "",
             user: null,
@@ -97,12 +99,12 @@ export default {
                         for (let file in response[i].files) {
                             f = file;
                         }
-                        this.gists[i] = {name: f,created_at: response[i].created_at,description: response[i].description,html_url:response[i].html_url}
+                        this.gists[i] = { name: f, created_at: response[i].created_at, description: response[i].description, html_url: response[i].html_url }
                     }
                 } else {
                     console.log("Nenhum resultado obtido!");
                 }
-            }else if(this.endpoint == "/following"){
+            } else if (this.endpoint == "/following") {
                 this.following = response;
             }
         },
@@ -114,12 +116,12 @@ export default {
                 case '1':
                     this.choice = 1;
                     this.endpoint = "/repos";
-                    (!this.repositories.length?this.getData(this.endpoint):"");
+                    (!this.repositories.length ? this.getData(this.endpoint) : "");
                     break;
                 case '2':
                     this.choice = 2
                     this.endpoint = "/gists";
-                    (!this.gists.length?this.getData(this.endpoint):"");
+                    (!this.gists.length ? this.getData(this.endpoint) : "");
                     break;
                 case '3':
                     this.choice = 3
@@ -127,7 +129,7 @@ export default {
                 case '4':
                     this.choice = 4
                     this.endpoint = "/following";
-                    (!this.following.length?this.getData(this.endpoint):"");
+                    (!this.following.length ? this.getData(this.endpoint) : "");
                     break;
             }
         },
@@ -175,6 +177,21 @@ export default {
     border: 1px solid #dddddd;
     margin-top: 10px;
     border-radius: 2px;
+}
+
+.user-following {
+    display: flex;
+    background-color: #ffffff;
+    border: 1px solid #dddddd;
+    margin-top: 10px;
+    border-radius: 2px;
+    flex-wrap: wrap;
+    justify-content: space-around;
+}
+
+.user-following img {
+    width: 100%;
+    display: block;
 }
 
 .user-repo {
@@ -253,10 +270,18 @@ export default {
         padding: 0 10px;
     }
 
+    .main-header-content h1 a {
+        font-size: 0.75em;
+    }
+
     .tab-links {
         display: block;
         padding: 20px 20px !important;
         text-align: center;
+        background-color: #2980b9 !important;
+        border-bottom: 1px solid #fff !important;
+        color: #FFF !important;
+        font-weight: 500;
     }
 
     .user-info ul {
