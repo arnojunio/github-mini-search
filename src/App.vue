@@ -16,14 +16,16 @@ export default {
   name: 'App',
   components: {
     Header, Footer
-  }
+  },
+  
+  
 }
 </script>
 
 <style>
 .fade-enter-active,
 .fade-leave-active {
-  transition: opacity 0.5s, transform 0.5s;
+  transition: opacity 0.4s, transform 0.4s;
 }
 
 .fade-enter-from,

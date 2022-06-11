@@ -1,5 +1,5 @@
 <template>
-  <header class="main-header">
+  <header :class="[this.fixed ? 'fixed' : '',' main-header']">
     <div class="main-header-content">
       <h1>
         <router-link to="/">Github | User Search</router-link>
@@ -20,7 +20,24 @@
 
 <script>
 export default {
-  name: "Header"
+  name: "Header",
+  data(){
+    return{
+      fixed: false
+    }
+  },
+  methods: {
+    handleScroll: function() {
+     this.fixed = window.scrollY > 95
+    }
+  },
+  mounted: function () {
+    window.addEventListener('scroll', this.handleScroll)
+  },
+  beforeUnmount: function () {
+    window.removeEventListener('scroll', this.handleScroll)
+  }
+
 }
 </script>
 
@@ -32,7 +49,9 @@ body {
   display: block;
   background-color: #eeeeee;
 }
-
+.fixed{
+  position: fixed;
+}
 .main-header {
   width: 100%;
   background-color: #2980b9;

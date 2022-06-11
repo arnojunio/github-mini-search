@@ -42,11 +42,13 @@
                     <div v-if="choice == 4" class="user-following">
 
                         <div class="card fade-in" v-for="flw in following" :key="flw.id">
-                            <a target="_blank" class="repos-links" :href="flw.html_url">
+                            <router-link class="repos-links"
+                                :to="{ name: 'app.user', params: { username: flw.login } }">
                                 <div class="img"><img :src="flw.avatar_url" alt="avatar">
                                 </div>
                                 <h4><b>{{ flw.login }}</b></h4>
-                            </a>
+                            </router-link>
+
                         </div>
                     </div>
                 </div>
@@ -75,6 +77,18 @@ export default {
     props: {
         username: { type: String, required: true }
     },
+    watch: {
+    // whenever question changes, this function will run
+    username() {
+      this.found = false;
+      this.user = null;
+      this.endpoint = "";
+      this.repositories = [];
+      this.gists = [];
+      this.following = [];
+      this.getData();
+    }
+  },
     methods: {
         async getData(endpoint = "") {
             await this.$axios.get(`https://api.github.com/users/${this.username}${endpoint}`)
@@ -149,7 +163,7 @@ export default {
 .user-wrapp {
     max-width: calc(1300px - 40px);
     padding: 0 20px;
-    margin: 20px auto;
+    margin: 0 auto;
     display: flex;
     justify-content: center;
     flex-wrap: wrap;
@@ -245,29 +259,35 @@ export default {
 }
 
 .username {
-    position: absolute;
-    bottom: 70px;
-    margin: 0 20px;
-    color: #fff;
+    text-align: center;
 }
 
 .user-caption {
-    padding: 0 20px;
+    padding: 0 10px;
+    text-align: justify;
+    font-size: 0.875em;
+    margin: 20px 0;
 }
 
 .username>h2 {
-    font-size: 27px;
-    font-weight: lighter;
-    position: relative;
-    margin: 31px 0 4px;
-    text-transform: uppercase;
-    text-shadow: 1px 1px 2px #000;
+    font-size: 1.2em;
+    text-align: center;
 }
 
 @media (max-width: 30em) {
     .user-profile {
-        flex-basis: 100%;
+        flex-basis: 95%;
+        background: #fff;
         padding: 0 10px;
+        border-radius: 10%;
+        margin: 0 auto;
+    }
+
+    .user-profile img {
+        width: 40%;
+        border-radius: 50%;
+        display: block;
+        margin: 10px auto;
     }
 
     .main-header-content h1 a {
