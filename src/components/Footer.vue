@@ -14,6 +14,8 @@ export default {
 
 <style>
 .page-footer{
+    position: relative;
+    top: 112px;
     width: 100%;
     background-color: #eaeaea;
 }

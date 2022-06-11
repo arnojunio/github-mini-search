@@ -16,14 +16,14 @@ export default {
     scrollTop: function () {
       window.scrollTo({top: 0, behavior: 'smooth'});
     },
-    scrollListener: function (e) {
+    scrollListener: function () {
       this.visible = window.scrollY > 250
     }
   },
   mounted: function () {
     window.addEventListener('scroll', this.scrollListener)
   },
-  beforeDestroy: function () {
+  beforeUnmount: function () {
     window.removeEventListener('scroll', this.scrollListener)
   }
 }
@@ -36,7 +36,7 @@ export default {
   bottom: 40px;
   right: 2%;
   width: 40px;
-  background-color: #42b883;
+  background-color: #2980b9;
   color:#FFF;
   height: 40px;
   line-height: 40px;

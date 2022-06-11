@@ -1,5 +1,5 @@
 <template>
-  <header :class="[this.fixed ? 'fixed' : '',' main-header']">
+  <header class="main-header">
     <div class="main-header-content">
       <h1>
         <router-link to="/">Github | User Search</router-link>
@@ -54,9 +54,10 @@ body {
 }
 .main-header {
   width: 100%;
+  position: fixed;
   background-color: #2980b9;
-  border: 1px solid transparent;
   z-index: 999;
+  margin-bottom: 20px;
 }
 
 .main-header-content {

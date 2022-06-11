@@ -12,14 +12,14 @@
                         {{ user.bio }}
                     </div>
                 </div>
-                <div class="user-info">
+                <div v-show="show" class="user-info fade_in">
                     <ul>
-                        <li><a class="tab-links" @click="changeTab('1')">Repositórios</a></li>
+                        <li><a class="tab-links" @click="changeTab('1')">Repositories</a></li>
                         <li><a class="tab-links" @click="changeTab('2')">Gists</a></li>
-                        <li><a class="tab-links" @click="changeTab('3')">Seguidores</a></li>
-                        <li><a class="tab-links" @click="changeTab('4')">Seguindo</a></li>
+                        <li><a class="tab-links" @click="changeTab('3')">Followers</a></li>
+                        <li><a class="tab-links" @click="changeTab('4')">Following</a></li>
                     </ul>
-                    <div v-if="choice == 1" class="user-repositories">
+                    <div id="repos" v-if="choice == 1" class="user-repositories">
                         <a target="_blank" class="repos-links" v-for="repo in repositories" :key="repo.id"
                             :href="repo.html_url">
                             <div class="user-repo">
@@ -29,7 +29,7 @@
                             </div>
                         </a>
                     </div>
-                    <div v-if="choice == 2" class="user-repositories">
+                    <div  v-if="choice == 2" class="user-repositories">
                         <a target="_blank" class="repos-links" v-for="gist in gists" :key="gist.id"
                             :href="gist.html_url">
                             <div class="user-repo">
@@ -71,24 +71,18 @@ export default {
             endpoint: "",
             user: null,
             found: false,
-            response: null
+            response: null,
+            show: false
         }
     },
     props: {
         username: { type: String, required: true }
     },
     watch: {
-    // whenever question changes, this function will run
-    username() {
-      this.found = false;
-      this.user = null;
-      this.endpoint = "";
-      this.repositories = [];
-      this.gists = [];
-      this.following = [];
-      this.getData();
-    }
-  },
+        username() {
+            
+        }
+    },
     methods: {
         async getData(endpoint = "") {
             await this.$axios.get(`https://api.github.com/users/${this.username}${endpoint}`)
@@ -121,6 +115,9 @@ export default {
             } else if (this.endpoint == "/following") {
                 this.following = response;
             }
+        },
+        showUserInfo() {
+            setTimeout(() => { this.show = true }, 1000);
         },
         formatDate(date) {
             return date.replace(/(\d{4})-(\d{2})-(\d{2}).*/, "$3/$2/$1");
@@ -155,6 +152,7 @@ export default {
     },
     created() {
         this.getData();
+        this.showUserInfo();
     }
 }
 </script>
@@ -273,6 +271,40 @@ export default {
     font-size: 1.2em;
     text-align: center;
 }
+
+.fade_in {
+    -webkit-animation: fade_in 0.6s cubic-bezier(0.390, 0.575, 0.565, 1.000) both;
+    animation: fade_in 0.6s cubic-bezier(0.390, 0.575, 0.565, 1.000) both;
+}
+
+@-webkit-keyframes fade_in {
+    0% {
+        -webkit-transform: translateZ(-80px);
+        transform: translateZ(-80px);
+        opacity: 0;
+    }
+
+    100% {
+        -webkit-transform: translateZ(0);
+        transform: translateZ(0);
+        opacity: 1;
+    }
+}
+
+@keyframes fade_in {
+    0% {
+        -webkit-transform: translateZ(-80px);
+        transform: translateZ(-80px);
+        opacity: 0;
+    }
+
+    100% {
+        -webkit-transform: translateZ(0);
+        transform: translateZ(0);
+        opacity: 1;
+    }
+}
+
 
 @media (max-width: 30em) {
     .user-profile {

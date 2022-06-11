@@ -5,7 +5,7 @@
         <div class="box-search">
           <h1>Github user search</h1>
 
-          <input class="search" @change="getData" v-model="term" type="text" placeholder="Search for an user..."
+          <input id="myInput" class="search" @change="getData" v-model="term" type="text" placeholder="Search for an user..."
             required />
 
         </div>
@@ -106,22 +106,43 @@ export default {
 .box-search {
   max-width: 900px;
   margin: 0 auto;
+  padding: 0 20px;
 }
-
+/*
 .search[type=text] {
   width: calc(100% - 80px);
   margin: 0 40px;
   padding: 10px 10px !important;
   font-size: 1.4em;
-
-
-
 }
 
 .search[type=text]:focus {
   border-color: #9dbbcf;
   box-shadow: 0 0 0 0.2rem rgba(40, 139, 206, 0.25);
   border-color: -internal-light-dark(rgb(211, 32, 32), rgb(214, 2, 2));
+}*/
+#myInput {
+    background-position: 10px 12px;
+    background-repeat: no-repeat;
+    background-color: #ffffff;
+    line-height: 10px;
+    width: 100%;
+    padding: 20px 30px;
+    border-radius: 40px;
+    border: 2px solid;
+    font-size: 1.2em;
+    font-weight: 400;
+    font-family: 'Open Sans', sans-serif;
+    z-index: 999;
+    border: none;
+    box-shadow: 0px 0px 5px 1pt #d6dce6;
+}
+#myInput:focus {
+    border: none;
+    /*box-shadow: 0px 0px 5px 1pt grey;*/
+    box-shadow: 0px 0px 5px 1pt #d6dce6;
+    outline: none;
+    transition: .1s;
 }
 
 .content {
